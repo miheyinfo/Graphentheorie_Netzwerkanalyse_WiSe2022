@@ -1,0 +1,1 @@
+# Graphentheorie_Netzwerkanalyse_WiSe2022
