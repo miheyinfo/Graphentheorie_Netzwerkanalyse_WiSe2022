@@ -6,7 +6,8 @@
 
 \documentclass[a4paper]{book}
 \usepackage[twoside=false,margin=2.5cm,bindingoffset=2cm]{geometry}
-
+%% select english for this paper
+\usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
 \usepackage{bibgerm}
@@ -25,7 +26,6 @@
 \begin{document}
 \input{text/titel}
 \frontmatter
-\input{text/kurzfassung}
 \input{text/abstract}
 \tableofcontents
 \listoffigures
@@ -41,5 +41,5 @@
 \input{appendix/apA} % Appendix A
 \backmatter
 \bibliographystyle{gerplain}
-\bibliography{thesis}
+\bibliography{paper}
 \end{document}
