@@ -1,4 +1,20 @@
 \chapter{Problem statement}
 \label{cha:problem-statement}
 
-Diese Vorlage basiert auf der offiziellen .doc Vorlage~\cite{vorlagen} der HTW Berlin.
+One of the reasons people engage in trading of securities is the media, mostly because media outlets provide information about certain industries and companies that can be valuable. Another reason is that media can impact market behaviour, due to its influence on public opinion.
+
+The research conducted in this paper aims at exploring whether there are certain correlations and dependencies in media coverage of securities, particularly, stocks. The media coverage can be represented in a form of a graph network, which can be used for such scientific exploration.
+\\
+
+\noindent In our research, we explore two hypotheses and try to either confirm or deny them:
+
+
+\begin{itemize}
+\item[1)] The media covers stocks based on their industry sector. If that is true, we can cluster such news, which can be used by investors to gain insights into the current state of the market.
+\end{itemize}
+Example: the media mentions several companies in the news article. Each company belongs to a certain industry sector. Those companies mentioned in the news article have the same industry sector.
+\begin{itemize}
+\item[2)] There is a correlation between news sentiment and stock price performance. If the news sentiment is negative, the behaviour of the stock price is bearish (negative trend), and vice versa. If that is true, the investors have an additional instrument to determine whether the stock price is overvalued/undervalued.
+\end{itemize}
+Example: several media outlets mention a publicly traded company in the news article. The average sentiment is negative, which correlates with the price drop.
+In our research, we exclude causation, in particular, whether the news sentiment can be the cause of the stock price behaviour, as such exploration would be too extensive and require additional time (e.g. conducting a Granger-causality test)
