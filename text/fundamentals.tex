@@ -1,2 +1,58 @@
 \chapter{Fundamentals}
 \label{cha:fundamentals}
+
+In this chapter we discuss the definitions of several terms we use in our research, as well as technologies and algorithms.
+
+\subsection{Stock performance}
+\label{cha:stock-performance}
+Stock market is a financial market where the new issues of stocks, i.e., initial public offerings (IPOs), are created and sold at the primary market whereas the succeeding buying and selling are carried out at the secondary market [p.1]
+Stock price is not the only factor determining company performance. Usually, the number of factors are taken into account, particularly company fundamentals, e.g. earnings reports, and metrics such as free cash flow.
+For the purpose of this paper, we will evaluate company performance based on its price behaviour because it is the most common indicator of a company's health.
+\subsection{News coverage}
+\label{cha:news-coverage}
+In this paper we explore news coverage, where we define it as financial news headlines, summary, as well contents mentioning a particular company (companies) regarding its current stock price behaviour or general financial situation.
+We exclude social media from our analysis, as from our perspective, this data tends to be noisy and, in most cases, contains relatively weak signals of company financial behaviour, thus requiring additional efforts to extract relevant information, not compatible with research deadlines.
+
+\subsection{Sentiment}
+\label{cha:sentiment}
+We define sentiment as the current general attitude towards a company, expressed in news articles. It can be either negative, neutral or positive.
+
+\subsection{Breadth-first-search}
+\label{cha:breadth-first-search}
+Breadth-First Search (BFS) is a principal search algorithm and fundamental primitive for many graph algorithms such as computing reachability and shortest paths [p.1]. It allows traversing a graph in optimal time and space complexity, which can be represented as the sum of vertices (nodes) and edges of the graph (V+E) since in the worst-case all nodes and edges are visited during traversal.
+
+\newpage
+\noindent When using BFS, a data structure called a queue is used (with FIFO functionality).\\
+\noindent The easiest way to understand the algorithm is through the code. Here is an example of BFS in Python programming language:
+\\
+
+\begin{lstlisting}[caption=Queue data structure in python, captionpos=b, language=bash, label={lst:queue-data-structure}]
+from collections import deque
+
+queue = deque()
+visited = set()
+queue.append(source)
+visited.add(source)
+while queue:
+   node = queue.popleft()
+   for i in graph[node]:
+       if i not in visited:
+           queue.append(i)
+           visited.add(i)
+\end{lstlisting}
+
+The code uses a queue to temporarily store the nodes. Once a node is extracted from the queue, all its neighbours are added to the queue. This process continues until all nodes are visited or specified conditions are met. The algorithm also skips cycles by avoiding already visited nodes (in this example, by checking if a node was already visited in a hash-map data structure).
+
+Many popular graph algorithms are based on or similar to BFS, such as the Dijkstra algorithm (using a heap instead of a queue), Prim's algorithms, etc. BFS is widely regarded as one of the simplest, as well as effective graph traversal algorithms.
+
+\subsection{Neo4j graph database}
+Neo4j is an open-source, NoSQL, native graph database that provides an ACID-compliant transactional backend \cite{Neo4J:online} . Information in Neo4j is stored as nodes, relationships and properties (property graph model). Both nodes and relationships can have properties, which are key-value pairs.
+Relationships are directed, though it is possible to execute search queries without specifying a direction.
+
+Neo4j API is exposed through Cypher, a declarative query language, which is particularly suited for graphs.
+Additionally, the contents of the Neo4j database can be visually represented in Neo4j Browser, thus eliminating the need of creating a way to display the graph.
+
+
+\subsection{Similar research}
+Extensive research has been made regarding graph databases (e.g. \cite{Arxiv-1-Represent-2211161017:online}, \cite{Arxiv-2-Enter-2108028697:online}), sentiment analysis (e.g. \cite{Anovelen10:online}), and stock market analysis and prediction (\cite{Arxiv-4-Trend-Prediction-1903054480:online}).
+Graph representation of news coverage of the stock market, explored in this paper, is, we believe, unique.

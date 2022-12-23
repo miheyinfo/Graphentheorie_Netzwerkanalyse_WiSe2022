@@ -17,6 +17,44 @@
 \usepackage{wallpaper}
 \usepackage{textpos}
 
+
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Listing}
+
+
+\lstset{
+	language=python,
+	numbers=left,
+	columns=fullflexible,
+	aboveskip=5pt,
+	belowskip=10pt,
+	basicstyle=\small\ttfamily,
+	backgroundcolor=\color{black!5},
+	commentstyle=\color{black},
+	morecomment=[s]{.s}{hape}, % workaround to exclude ".shape"
+	keywordstyle=\color{antiquefuchsia},
+	otherkeywords={self, else},
+	emphstyle=\color{bostonuniversityred},
+	emph={shape,units,name,filters,kernel_size,activation,padding,kernel_initializer,kernel_regularizer,bias_initializer,inputs,outputs,mode,distribution,minval,maxval, callback_args, low, high, limit, window_length, size, mu, theta, sigma},
+	stringstyle=\color{Ao},
+	showspaces=false,
+	showstringspaces=false,
+	showtabs=false,
+	xleftmargin=16pt,
+	xrightmargin=0pt,
+	framesep=5pt,
+	framerule=1pt,
+	frame=leftline,
+	rulecolor=\color{black},
+	tabsize=2,
+	breaklines=true,
+	breakatwhitespace=true
+}
+%% colors for code
+\definecolor{Ao}{rgb}{0.0, 0.39, 0.0}
+\definecolor{antiquefuchsia}{rgb}{0.57, 0.36, 0.51}
+\definecolor{bostonuniversityred}{rgb}{0.8, 0.0, 0.0}
+
 % set wallpaper position for title page
 \addtolength{\wpXoffset}{0.0cm}
 \addtolength{\wpYoffset}{7.0cm}
@@ -41,5 +79,6 @@
 \input{appendix/apA} % Appendix A
 \backmatter
 \bibliographystyle{gerplain}
-\bibliography{paper}
+\bibliography{thesis}
 \end{document}
+
