@@ -4,3 +4,141 @@
 \section{Hypothesis 1}
 \label{cha:hypothesis-1}
 \subsection{The media covers securities based on their industry sector}
+
+Financial instruments, such as stocks and bonds, are frequently classified into market sectors to enable comparison of companies with similar operations. Each sector possesses unique traits and considerations that can affect the desirability of investments within that sector. An investment manager may opt to concentrate on a particular sector or diversify by including various sectors in their portfolio.
+Market sectors provide a valuable structure for assessing potential investments and identifying which securities may be most pertinent to monitor within a specific sector. This can be especially useful when building a portfolio with a predetermined market weighting. By considering the specific characteristics of different sectors, an investor can make more informed decisions about which investments to include in their portfolio. \cite{globex:online}
+
+The media plays a significant role in shaping public perception and understanding of various industries and companies. In particular, the media often covers securities, or financial instruments such as stocks and bonds, based on the industry sector to which they belong. This coverage can have a significant impact on the perceived value and performance of these securities. For example, a company that operates in a rapidly growing industry may receive more media attention and be seen as a more attractive investment opportunity compared to a company in a slower-growing industry \cite{MediaCov52:online}. Similarly, negative media coverage of a particular industry sector may lead to negative perceptions and lower demand for securities within that sector. Understanding the media's coverage of securities based on their industry sector can therefore be important for investors seeking to make informed investment decisions.
+
+It is proven by different papers that news sentiments can have an impact on the behavior of stock charts. This is because news articles, particularly those related to a company's financial performance, can contain valuable information about the company's future prospects and thus influence its stock price. In the research “Stock trend prediction using news sentiment analysis” \cite{1607019540:online} the authors used non-quantitative data, specifically financial news articles about a company, to predict the future trend of its stock. Main goal of the research was to examine the relationship between news and stock trends by classifying the polarity of the news articles as positive or negative. Three different classification models were created with subsequent evaluation of their performance. The results showed that the Random Forest and Support Vector Machine models performed well, while the Naive Bayes model had slightly lower performance. Overall, the accuracy of the prediction model was found to be more than 80\%, which represents an improvement of 30\% compared to random labeling of news articles with 50\% accuracy \cite{1607019540:online}. 
+Another group conducted a research and analyzed news sentiments related to the stock market, and developed a sentiment analysis dictionary which had a directional accuracy of about 70\%.The authors also mention that previous research has demonstrated that various forms of online information, such as Wikipedia usage patterns, news stories, and social media consumption, can affect investors' opinions and subsequently, financial markets \cite{1812041948:online}
+
+\newpage
+In this paper, we use a graph database to firstly focus on the hypothesis if the media coverage of securities also propagates to other stocks in the same industry sector, without considering the price, but rather examining other equities within the same industry sector.  For instance, it is of interest to examine whether media sources tend to report on securities from the same industry sector following coverage by a single media source, or if the coverage is limited to the specific security initially reported on.
+
+
+\noindent To prove or disprove the first hypothesis, we explore the graph data, gathered as described in chapter \ref{cha:methodology}.\\
+First, we need to get all the NewsItems from the gathered data. According to the specifics, described in the chapter \ref{cha:model}, the NewsItems have the following relationships and properties, as seen in the following example of news coverage for the company Lockheed Martin:
+
+\begin{lstlisting}[caption={Example properties of a NewsItem}, captionpos=b, label={lst:example-properties-newsitem}]
+"properties": {
+    "summary": "Lockheed (LMT) reported earnings 30 days ago. What's next for the stock? We take a look at earnings estimates for some clues.",
+    "source_domain": "www.zacks.com",
+    "overall_sentiment_label": "Somewhat-Bullish",
+    "category_within_source": "n/a",
+    "overall_sentiment_score": 0.19736,
+    "source": "Zacks Commentary",
+    "banner_image": "https://staticx-tuner.zacks.com/images/default_article
+                    _images/default70.jpg",
+    "title": "Lockheed  ( LMT )  Up 6% Since Last Earnings Report: Can It Continue?",
+    "time_published": "2022-11-17T16:30:18",
+    "url": "https://www.zacks.com/stock/news/2019526/lockheed-lmt-up-6-since-last
+            -earnings-report-can-it-continue",
+    "authors": [
+      "Zacks Investment Research"
+    ]
+  },
+}
+\end{lstlisting}
+
+Following query can be used to get all the NewsItems:
+
+\begin{lstlisting}[caption=Get all NewsItem Cypher Query, captionpos=b, language=bash, label={lst:getall-newsitem-cypher}]
+MATCH (n:NewsItem) RETURN n LIMIT 1000
+\end{lstlisting}
+
+\noindent This yields the following graph:
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.5\textwidth]{images/newsItemsAll.png}
+ \caption{Raw data with 546 NewsItem nodes }
+ \label{fig:raw-data-546-newsitem-nodes}
+\end{figure}
+
+It is important to consider that NewsItems have a relationship of ``COVERS`` to a specific Company and ``HAS`` to TickerSentiment and Topic. This data can then be synthesized to establish a new relationship between NewsItems and Sectors.
+
+\noindent Query from Listing \ref{lst:relationship-newsitems-sectors} can be used for that:
+
+\begin{lstlisting}[caption={Relationship between NewsItems and Sectors},label={lst:relationship-newsitems-sectors},captionpos=b]
+MATCH (n:NewsItem)-[:COVERS]-(c:Company)-[:IS_IN]-(s:Sector)
+WITH n, collect(distinct s) as ns
+UNWIND ns as N
+CALL apoc.create.vRelationship(n,'COVERS_INDUSTRY',{}, N) YIELD rel
+RETURN n, rel, N
+\end{lstlisting}
+
+\noindent This yields the following graph with 503 NewsItems and 7 Sectors
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.7\textwidth]{images/newsItemCoverageSector.png}
+ \caption{NewsItems and their Sector coverage }
+ \label{fig:newsitems-sector-coverage}
+\end{figure}
+
+In this example, we will investigate the relationship between news coverage and the behavior of Apple stock, considering the time factor. To do this, we will collect data on news articles related to the stock over a specific period of time and analyze the volume and tone of the coverage. 
+The time factor is an important consideration when studying the relationship between news coverage and stock behavior, as it can provide insights into the public perception and understanding of the company and its performance. By examining the news coverage and stock behavior over a specific period of time, we can better understand the impact of the media on financial markets. In addition to examining the time factor, it is also important to consider other factors that may impact the stock's behavior, such as market conditions, economic indicators, and news events related to the company or industry. \cite{2107087294:online}
+
+\newpage
+\noindent The following query (Listing: \ref{lst:relationship-apple-time}) allows the retrieval of NewsItems that covered Apple within the time frame of October to November 2022, each beginning of the month:\\
+
+\begin{lstlisting}[caption={Relationship of NewsItems to Apple Stock october till november}, label={lst:relationship-apple-time},captionpos=b]
+MATCH (n:NewsItem)-[:COVERS]-(c:Company{name:"Apple Inc"})-[:IS_IN]-(s:Sector{sector_name:"TECHNOLOGY"})
+WITH n, collect(distinct s) as ns
+UNWIND ns as N
+CALL apoc.create.vRelationship(n,'COVERS_INDUSTRY',{}, N) YIELD rel
+WHERE datetime(n.time_published) >= datetime("2022-10-01T00:00:00") AND datetime(n.time_published) < datetime( "2022-11-01T00:00:00")
+RETURN n, rel, N
+\end{lstlisting}
+
+\noindent This produces a single result, meaning Apple was covered only once, by Motley Fool:
+
+\begin{table}[h]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|l|l|}
+\hline
+Summary                                                                         & overall\_sentiment\_label \\ \hline
+Plus a look at investing books, stocks to watch, and other topics for investors & Neutral                   \\ \hline
+\end{tabular}%
+}
+\end{table}
+
+\noindent No notable events occurred until November 8th, when Apple received coverage from Benzinga with the following content in the title: “Apple To \$180? Plus Piper Sandler Predicts \$132 For Take-Two Interactive” Following graph chart (see Fig. \ref{fig:newsitems-apple-coverage-october-8th-november} is the output of the query above, with the timeframe october - 08th november:
+
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.3\textwidth]{images/apple-two-news.png}
+ \caption{Apple coverage october to 8th of november }
+ \label{fig:newsitems-apple-coverage-october-8th-november}
+\end{figure}
+
+The news article from Benzinga mentions Apple in the context of a decline in its share price, which is reportedly linked to an event involving Take-Two-Interactive. To further investigate this, we will analyze the coverage of Apple stock in the Technology sector from November 08th to November 30th (a period of twenty two days). The query remains same with only modification to the end date:
+
+\begin{lstlisting}[caption={Datetime modification for the query in Listing \ref{lst:relationship-apple-time}}\label{lst:query-mod-rel-apple-time},captionpos=b]
+< datetime( "2022-11-30T00:00:00")
+\end{lstlisting}
+
+After implementing this modification, we see that the coverage of Apple and the Technology sector significantly increased, resulting in the identification of 20 NewsItems that mention Apple. This increase in coverage could be due to a variety of factors, such as an increase in media interest in the company after the initial Apple coverage by Benzinga.
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.5\textwidth]{images/apple-after-benzinga.png}
+ \caption{Apple stock after Benzinga news coverage }
+ \label{fig:newsitems-apple-after-benzinga-coverage}
+\end{figure}
+
+Upon analyzing the overall\_sentiment\_label property of the NewsItems that cover Apple in the time frame described above, 8 of them had a somewhat-bullish sentiment, 1 had a somewhat-bearish sentiment, and 11 had a neutral sentiment. This distribution of sentiments suggests that the news coverage of Apple was relatively positive, with a slightly higher proportion of neutral articles. \\
+\\
+To further investigate this topic, we examined the coverage of Take-Two Interactive Software from the beginning of October to the 8th of November, which did not yield any coverage from news providers. After the publication of the article about Apple stock in relation to Take-Two-Interactive on November 8th, we compared the coverage from November 9th to the 30th and found 17 NewsItems covering the company. This analysis provides further evidence of the influence of media coverage on the behavior of stocks, as the publication of the article about Apple appeared to spark an increase in coverage of Take-Two Interactive.\\
+\\
+The data in the provided graph database clearly indicates that media coverage tends to be drawn to stocks that receive attention from other NewsItems and is generally focused within the covered sector. This suggests that news articles about certain stocks may be more likely to be published or shared if they are already receiving significant attention from other sources. This phenomenon can provide valuable insights for investors and market analysts, as it can provide an indication of the public perception and behavior of different stocks.
+
+
+
+\newpage
+\section{Hypothesis 2}
+\label{cha:hypothesis-2}
+\subsection{There is a correlation between news sentiment and stock price performance}
