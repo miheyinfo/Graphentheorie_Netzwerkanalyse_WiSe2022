@@ -6,11 +6,11 @@
 \subsection{The media covers securities based on their industry sector}
 
 Financial instruments, such as stocks and bonds, are frequently classified into market sectors to enable comparison of companies with similar operations. Each sector possesses unique traits and considerations that can affect the desirability of investments within that sector. An investment manager may opt to concentrate on a particular sector or diversify by including various sectors in their portfolio.
-Market sectors provide a valuable structure for assessing potential investments and identifying which securities may be most pertinent to monitor within a specific sector. This can be especially useful when building a portfolio with a predetermined market weighting. By considering the specific characteristics of different sectors, an investor can make more informed decisions about which investments to include in their portfolio. \cite{globex:online}
+Market sectors provide a valuable structure for assessing potential investments and identifying which securities may be most pertinent to monitor within a specific sector. This can be especially useful when building a portfolio with a predetermined market weighting. By considering the specific characteristics of different sectors, an investor can make more informed decisions about which investments to include in their portfolio. \cite{kalyani2016stock}
 
 The media plays a significant role in shaping public perception and understanding of various industries and companies. In particular, the media often covers securities, or financial instruments such as stocks and bonds, based on the industry sector to which they belong. This coverage can have a significant impact on the perceived value and performance of these securities. For example, a company that operates in a rapidly growing industry may receive more media attention and be seen as a more attractive investment opportunity compared to a company in a slower-growing industry \cite{MediaCov52:online}. Similarly, negative media coverage of a particular industry sector may lead to negative perceptions and lower demand for securities within that sector. Understanding the media's coverage of securities based on their industry sector can therefore be important for investors seeking to make informed investment decisions.
 
-It is proven by different papers that news sentiments can have an impact on the behavior of stock charts. This is because news articles, particularly those related to a company's financial performance, can contain valuable information about the company's future prospects and thus influence its stock price. In the research “Stock trend prediction using news sentiment analysis” \cite{1607019540:online} the authors used non-quantitative data, specifically financial news articles about a company, to predict the future trend of its stock. Main goal of the research was to examine the relationship between news and stock trends by classifying the polarity of the news articles as positive or negative. Three different classification models were created with subsequent evaluation of their performance. The results showed that the Random Forest and Support Vector Machine models performed well, while the Naive Bayes model had slightly lower performance. Overall, the accuracy of the prediction model was found to be more than 80\%, which represents an improvement of 30\% compared to random labeling of news articles with 50\% accuracy \cite{1607019540:online}. 
+It is proven by different papers that news sentiments can have an impact on the behavior of stock charts. This is because news articles, particularly those related to a company's financial performance, can contain valuable information about the company's future prospects and thus influence its stock price. In the research “Stock trend prediction using news sentiment analysis” \cite{kalyani2016stock} the authors used non-quantitative data, specifically financial news articles about a company, to predict the future trend of its stock. Main goal of the research was to examine the relationship between news and stock trends by classifying the polarity of the news articles as positive or negative. Three different classification models were created with subsequent evaluation of their performance. The results showed that the Random Forest and Support Vector Machine models performed well, while the Naive Bayes model had slightly lower performance. Overall, the accuracy of the prediction model was found to be more than 80\%, which represents an improvement of 30\% compared to random labeling of news articles with 50\% accuracy \cite{kalyani2016stock}. 
 Another group conducted a research and analyzed news sentiments related to the stock market, and developed a sentiment analysis dictionary which had a directional accuracy of about 70\%.The authors also mention that previous research has demonstrated that various forms of online information, such as Wikipedia usage patterns, news stories, and social media consumption, can affect investors' opinions and subsequently, financial markets \cite{1812041948:online}
 
 \newpage
@@ -141,4 +141,48 @@ The data in the provided graph database clearly indicates that media coverage te
 \newpage
 \section{Hypothesis 2}
 \label{cha:hypothesis-2}
-\subsection{There is a correlation between news sentiment and stock price performance}
+There is a correlation between news sentiment and stock price performance
+\subsection{Related work}
+As already noted in the chapter \ref{cha:hypothesis-1}
+existing studies in sentiment analysis have found that positive news sentiment is associated with positive stock price performance, while negative news sentiment is associated with negative stock price performance. However, the relationship between news sentiment and stock price performance is complex and may depend on various factors, such as the specific company being analyzed and the overall market conditions.\cite{kalyani2016stock}
+\subsection{Data analysis}
+As a starting point, we continue to look at NewsItems dedicated to Apple Inc, but in combination with the TikerSantiment of NewsItems relating only to that company. 
+\begin{lstlisting}[caption={Relationship of NewsItems to Apple Stock with TikerSantiment}, label={lst:newsItems_tikerSantiment_apple},captionpos=b]
+MATCH (c:Company {name:"Apple Inc"})-[:HAS]->(p:Price {company_ticker:"AAPL"})
+MATCH (n:NewsItem)-[:HAS]->(t:TickerSentiment{ticker:"AAPL"})
+MATCH (n:NewsItem)-[:COVERS]->(c{name:"Apple Inc"})
+RETURN c,n,t
+ORDER BY n.date ASC
+\end{lstlisting}
+
+The result of a subsequent query, represented in the graph:
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=0.6\textwidth]{images/apple_news_ticker_sentiment_graph.png}
+ \caption{Relationship of NewsItems to Apple with TikerSantiment }
+ \label{fig:apple_news_ticker_sentiment_graph}
+\end{figure}
+
+Next, we took a closer look at the development of prices compared to the TickesSentiment of the NewsItem.
+\begin{lstlisting}[caption={Relationship of NewsItem TikerSantiment and Price of Apple Stock }, label={lst:newsItems_tikerSantiment_and_price_apple},captionpos=b]
+// Appl Inc
+MATCH (c:Company {name:"Apple Inc"})-[:HAS]->(p:Price {company_ticker:"AAPL"})
+MATCH (n:NewsItem)-[:HAS]->(t:TickerSentiment{ticker:"AAPL"})
+MATCH (n:NewsItem)-[:COVERS]->(c{name:"Apple Inc"})
+RETURN c.name AS company, p.close AS price, n.time_published AS news_date, p.date AS price_date,  n.overall_sentiment_score AS news_sentiment, t.ticker_sentiment_score AS ticker_sentiment
+ORDER BY p.date ASC
+\end{lstlisting}
+
+\begin{figure}[h]
+ \centering
+ \includegraphics[width=1.0\textwidth]{images/price_news_ticker_charts.png}
+ \caption{News TikerSentiment and Price}
+ \label{fig:price_news_sentiment}
+\end{figure}
+
+This plot shows the relationship between news sentiment and stock price performance for 4 companys over a period of time. The x-axis represents the date, and the y-axis represents the stock price. The red dots showing the stock price over time normalized from -1 to 1, while the blue dots showing the news sentiment on a scale from -1 (extremely negative) to 1 (extremely positive). The plot shows that not always when news sentiment is positive, the stock price tends to increase, and  not always when news sentiment is negative, the stock price tends to decrease.
+
+
+---
+
+% This plot shows the relationship between news sentiment and stock price performance for a specific industry over a period of time. The x-axis represents the date, and the y-axis represents the average stock price for the industry. The line chart shows the average stock price over time, while the bar chart shows the average news sentiment on a scale from -1 (extremely negative) to 1 (extremely positive). The plot shows that when news sentiment is positive, the average stock price tends to increase, and when news sentiment is negative, the average stock price tends to decrease.
