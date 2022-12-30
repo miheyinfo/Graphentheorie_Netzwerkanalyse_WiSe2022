@@ -144,7 +144,7 @@ The data in the provided graph database clearly indicates that media coverage te
 There is a correlation between news sentiment and stock price performance
 \subsection{Related work}
 As already noted in the chapter \ref{cha:hypothesis-1}
-existing studies in sentiment analysis have found that positive news sentiment is associated with positive stock price performance, while negative news sentiment is associated with negative stock price performance. However, the relationship between news sentiment and stock price performance is complex and may depend on various factors, such as the specific company being analyzed and the overall market conditions.\cite{kalyani2016stock}
+existing studies in sentiment analysis have found that positive news sentiment is associated with positive stock price performance, while negative news sentiment is associated with negative stock price performance.\cite{kalyani2016stock}
 \subsection{Data analysis}
 As a starting point, we continue to look at NewsItems dedicated to Apple Inc, but in combination with the TikerSantiment of NewsItems relating only to that company. 
 \begin{lstlisting}[caption={Relationship of NewsItems to Apple Stock with TikerSantiment}, label={lst:newsItems_tikerSantiment_apple},captionpos=b]
@@ -176,12 +176,15 @@ ORDER BY p.date ASC
 \begin{figure}[h]
  \centering
  \includegraphics[width=1.0\textwidth]{images/price_news_ticker_charts.png}
- \caption{News TikerSentiment and Price}
+ \caption{News TickerSentiment and Price}
  \label{fig:price_news_sentiment}
 \end{figure}
 
-This plot shows the relationship between news sentiment and stock price performance for 4 companys over a period of time. The x-axis represents the date, and the y-axis represents the stock price. The red dots showing the stock price over time normalized from -1 to 1, while the blue dots showing the news sentiment on a scale from -1 (extremely negative) to 1 (extremely positive). The plot shows that not always when news sentiment is positive, the stock price tends to increase, and  not always when news sentiment is negative, the stock price tends to decrease.
+This plot shows the relationship between news sentiment and stock price performance for 4 companys over a period of time. The x-axis represents the date, and the y-axis represents the stock price. The red dots showing the stock price over time normalized from -1 to 1, while the blue dots showing the news sentiment on a scale from -1 (extremely negative) to 1 (extremely positive). For comparison, we chose four companies: Apple and Cisco from the technology sector, and coinbase and comerica from the financial sector. As we can see, the main news came out over the weekend around the 20th. The First Chart shows Apple's data.  Although the Ticker santiment of this news is mostly neutral, the price of this company's stock is falling after the news earlier in the week.  Also neutral is the news regarding Cisco, and despite the fact that in the previous week, the stock prices had an uptrend, next week the stock prices continue to rise, but not as much.  Coinbase stock prices are falling in the week to the 20th.  The same trend can be seen in the Ticker santiment news value that comes out over the weekend around the 20th.  Which explains the further drop in coinbase stock price on Monday.   We see the opposite picture on the last chart.   In the week to the 20th, comerica stock prices are in a downtrend.  During the week and the weekend, all of the published news has a positive ticker santiment.  Which could explain the subsequent rise in this company's stock price.
 
+% The plot shows that not always when news sentiment is positive, the stock price tends to increase, and  not always when news sentiment is negative, the stock price tends to decrease. 
+
+Upon analyzing the plot, we did not observe a clear relationship between news sentiment and stock price. The stock price seems to fluctuate randomly, with no clear trend or correlation to news sentiment. This suggests that other factors may be influencing the stock price, such as the company's financial performance, industry trends, or market conditions.
 
 ---
 
