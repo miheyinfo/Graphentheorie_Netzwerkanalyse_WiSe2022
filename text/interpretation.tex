@@ -2,6 +2,7 @@
 \label{cha:interpretation}
 
 \section{Hypothesis 1}
+\subsubsection*{Sergey Wolf (s0553749)}
 \label{cha:hypothesis-1}
 \subsection{The media covers securities based on their industry sector}
 
@@ -121,7 +122,7 @@ The news article from Benzinga mentions Apple in the context of a decline in its
 < datetime( "2022-11-30T00:00:00")
 \end{lstlisting}
 
-After implementing this modification, we see that the coverage of Apple and the Technology sector significantly increased, resulting in the identification of 20 NewsItems that mention Apple. This increase in coverage could be due to a variety of factors, such as an increase in media interest in the company after the initial Apple coverage by Benzinga.
+After implementing this modification, we see that the coverage of Apple and the Technology sector significantly increased, resulting in the identification of 20 NewsItems that mention Apple.
 
 \begin{figure}[h]
  \centering
@@ -140,6 +141,7 @@ The data in the provided graph database clearly indicates that media coverage te
 
 \newpage
 \section{Hypothesis 2}
+\subsubsection*{Mikhail Poberezhnyi(s0558681)}
 \label{cha:hypothesis-2}
 \subsection{There is a correlation between news sentiment and stock price performance}
 \subsubsection{Related work}
@@ -180,7 +182,7 @@ ORDER BY p.date ASC
  \label{fig:price_news_sentiment}
 \end{figure}
 
-This plot shows the relationship between news sentiment and stock price performance for 4 companys over a period of time. The x-axis represents the date, and the y-axis represents the stock price. The red dots showing the stock price over time normalized from -1 to 1, while the blue dots showing the news sentiment on a scale from -1 (extremely negative) to 1 (extremely positive). For comparison, we chose four companies: Apple and Cisco from the technology sector, and coinbase and comerica from the financial sector. As we can see, the main news came out over the weekend around the 20th. The First Chart shows Apple's data.  Although the Ticker sentiment of this news is mostly neutral, the price of this company's stock is falling after the news earlier in the week.  Also neutral is the news regarding Cisco, and despite the fact that in the previous week, the stock prices had an uptrend, next week the stock prices continue to rise, but not as much.  Coinbase stock prices are falling in the week to the 20th.  The same trend can be seen in the Ticker sentiment news value that comes out over the weekend around the 20th.  Which explains the further drop in coinbase stock price on Monday.   We see the opposite picture on the last chart.   In the week to the 20th, comerica stock prices are in a downtrend.  During the week and the weekend, all of the published news has a positive ticker sentiment.  Which could explain the subsequent rise in this company's stock price.
+This plot shows the relationship between news sentiment and stock price performance for 4 companys over a period of time. The x-axis represents the date, and the y-axis represents the stock price. The red dots showing the stock price over time normalized from -1 to 1, while the blue dots showing the news sentiment on a scale from -1 (extremely negative) to 1 (extremely positive). For comparison, we chose four companies: Apple and Cisco from the technology sector, and Coinbase and Comerica from the financial sector. As we can see, the main news came out over the weekend around the 20th. The First Chart shows Apple's data.  Although the Ticker sentiment of this news is mostly neutral, the price of this company's stock is falling after the news earlier in the week.  Also neutral is the news regarding Cisco, and despite the fact that in the previous week, the stock prices had an uptrend, next week the stock prices continue to rise, but not as much.  Coinbase stock prices are falling in the week to the 20th.  The same trend can be seen in the Ticker sentiment news value that comes out over the weekend around the 20th.  Which explains the further drop in coinbase stock price on Monday.   We see the opposite picture on the last chart.   In the week to the 20th, comerica stock prices are in a downtrend.  During the week and the weekend, all of the published news has a positive ticker sentiment.  Which could explain the subsequent rise in this company's stock price.
 
 % The plot shows that not always when news sentiment is positive, the stock price tends to increase, and  not always when news sentiment is negative, the stock price tends to decrease. 
 
